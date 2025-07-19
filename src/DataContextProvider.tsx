@@ -4,7 +4,8 @@ import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
 import { DataContext } from './DataContext'
 
-const DEFAULT_TITLE = 'Notes'
+const DEFAULT_TITLE = 'title'
+
 interface DataContextProviderPropsType {
   children: React.ReactNode | React.ReactNode[]
 }
@@ -17,6 +18,8 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   const [yDoc, setYDoc] = useState<Y.Doc>()
   const [yPages, setYPages] = useState<Y.Array<string>>()
   const [yMeta, setYMeta] = useState<Y.Map<number>>()
+
+  const [yText, setYText] = useState<Y.Text>()
 
   const [pages, setPages] = useState<string[]>()
   const [title, setTitle] = useState<string>()
@@ -43,6 +46,7 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
       setIndex(_index)
       setPages(_pages)
       setTitle(_pages?.[_index] ?? DEFAULT_TITLE)
+      setYText(yDoc?.getText(`page-${_index}`))
     }
     yPages?.observe(updateDataOnChange)
     yMeta?.observe(updateDataOnChange)
@@ -50,7 +54,7 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
       yPages?.unobserve(updateDataOnChange)
       yMeta?.unobserve(updateDataOnChange)
     }
-  }, [yPages, yMeta])
+  }, [yPages, yMeta, yDoc, index])
 
   const updateTitle = useCallback(
     (title: string) => {
@@ -66,17 +70,26 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
     [yMeta]
   )
 
+  const addPage = useCallback(() => {
+    const newIndex = pages?.length ?? 0
+    yPages?.insert(newIndex, [DEFAULT_TITLE])
+    yMeta?.set('index', newIndex)
+    return newIndex
+  }, [pages, yMeta, yPages])
+
   const contextValue = useMemo(
     () => ({
+      guid,
       setGuid,
       index,
       setIndex: updateIndex,
       pages,
       title,
       setTitle: updateTitle,
-      yText: yDoc?.getText(`page-${index}`),
+      addPage,
+      yText,
     }),
-    [yDoc, pages, index, title, updateIndex, updateTitle]
+    [guid, index, updateIndex, pages, title, updateTitle, addPage, yText]
   )
 
   return (

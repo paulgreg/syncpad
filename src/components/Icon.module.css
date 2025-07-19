@@ -1,0 +1,11 @@
+.root {
+  display: flex;
+
+  svg {
+    fill: white;
+  }
+
+  &:hover svg {
+    fill: var(--link-color);
+  }
+}

@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage.tsx'
 import settings from './settings.json'
 import EditorPage from './pages/EditorPage.tsx'
 import DataContextProvider from './DataContextProvider.tsx'
+import ListPage from './pages/ListPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -15,7 +16,8 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="/" element={<App />}>
             <Route index element={<HomePage />} />
-            <Route path="/editor/:guid" element={<EditorPage />} />
+            <Route path="/editor/:guid/:index" element={<EditorPage />} />
+            <Route path="/list/:guid" element={<ListPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
