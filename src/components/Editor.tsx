@@ -18,14 +18,21 @@ const Editor: React.FC<EditorProps> = ({ yText }) => {
     quillRef.current = new Quill(containerRef.current, {
       modules: {
         toolbar: [
-          [{ header: [false, 1, 2, 3, 4] }],
-          [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-          ['bold', 'italic', 'underline', 'strike'],
-          ['blockquote', 'code-block'],
-          ['link', 'formula'],
-          [{ list: 'bullet' }, { list: 'check' }, { list: 'ordered' }],
-          [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-          [{ align: [] }],
+          [
+            { header: [false, 1, 2, 3, 4] },
+            { size: ['small', false, 'large'] },
+          ],
+          [{ align: [] }, { color: [] }, { background: [] }],
+          [
+            'bold',
+            'italic',
+            'underline',
+            'strike',
+            'blockquote',
+            'code-block',
+            'link',
+          ],
+          [{ list: 'bullet' }, { list: 'ordered' }, { list: 'check' }],
         ],
         history: {
           userOnly: true, // Local undo shouldn't undo changes from remote users

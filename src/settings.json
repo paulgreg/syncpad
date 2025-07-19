@@ -1,3 +1,4 @@
 {
-  "baseUrl": "/"
+  "baseUrl": "/",
+  "wsUrl": "ws://localhost:1234/ws"
 }

@@ -18,9 +18,11 @@ const HomePage = () => {
   return (
     <main className={s.root}>
       <h1>SyncPad</h1>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} autoComplete="on">
+        <label htmlFor="pad">Pad : </label>
         <input
           ref={inputRef}
+          id="pad"
           type="text"
           minLength={1}
           maxLength={20}

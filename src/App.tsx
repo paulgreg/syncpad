@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router-dom'
+import s from './App.module.css'
 
 const App = () => (
-  <div className="app">
+  <div className={s.root}>
     <Outlet />
   </div>
 )
