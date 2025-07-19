@@ -10,6 +10,7 @@ type DataContextType = {
   title?: string
   setTitle: (title: string) => void
   addPage: () => number
+  removePage: (index: number) => void
   yText?: Y.Text
 }
 

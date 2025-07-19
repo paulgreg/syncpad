@@ -4,8 +4,6 @@ import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
 import { DataContext } from './DataContext'
 
-const DEFAULT_TITLE = 'title'
-
 interface DataContextProviderPropsType {
   children: React.ReactNode | React.ReactNode[]
 }
@@ -45,7 +43,7 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
       const _pages = yPages?.toArray()
       setIndex(_index)
       setPages(_pages)
-      setTitle(_pages?.[_index] ?? DEFAULT_TITLE)
+      setTitle(_pages?.[_index])
       setYText(yDoc?.getText(`page-${_index}`))
     }
     yPages?.observe(updateDataOnChange)
@@ -72,10 +70,18 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
 
   const addPage = useCallback(() => {
     const newIndex = pages?.length ?? 0
-    yPages?.insert(newIndex, [DEFAULT_TITLE])
+    yPages?.insert(newIndex, [''])
     yMeta?.set('index', newIndex)
     return newIndex
   }, [pages, yMeta, yPages])
+
+  const removePage = useCallback(
+    (index: number) => {
+      yPages?.delete(index, 1)
+      yMeta?.set('index', 0)
+    },
+    [yMeta, yPages]
+  )
 
   const contextValue = useMemo(
     () => ({
@@ -87,9 +93,20 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
       title,
       setTitle: updateTitle,
       addPage,
+      removePage,
       yText,
     }),
-    [guid, index, updateIndex, pages, title, updateTitle, addPage, yText]
+    [
+      guid,
+      index,
+      updateIndex,
+      pages,
+      title,
+      updateTitle,
+      addPage,
+      removePage,
+      yText,
+    ]
   )
 
   return (

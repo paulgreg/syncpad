@@ -7,7 +7,7 @@ import Icon from '../components/Icon'
 import { useCallback } from 'react'
 
 const EditorPage = () => {
-  const { yText, addPage } = useDataContext()
+  const { yText, pages, addPage } = useDataContext()
   const { guid } = useParams()
   const navigate = useNavigate()
 
@@ -23,7 +23,7 @@ const EditorPage = () => {
       <header className={sCommon.header}>
         <Title />
         <a href={`/list/${guid}`} title="list view">
-          <button>
+          <button disabled={(pages?.length ?? 0) === 0}>
             <Icon icon="list" />
           </button>
         </a>

@@ -13,7 +13,13 @@ const Title = () => {
   )
 
   return (
-    <input type="text" className={s.input} value={title} onChange={onChange} />
+    <input
+      type="text"
+      name="title"
+      value={title}
+      className={s.input}
+      onChange={onChange}
+    />
   )
 }
 
