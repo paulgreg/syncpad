@@ -2,14 +2,14 @@ import Quill from 'quill'
 import { useEffect, useRef } from 'react'
 import { QuillBinding } from 'y-quill'
 import type * as Y from 'yjs'
-import s from './Editor.module.css'
+import s from './QuillEditor.module.css'
 import 'quill/dist/quill.snow.css'
 
-type EditorProps = {
+type QuillEditorProps = {
   yText?: Y.Text
 }
 
-const Editor: React.FC<EditorProps> = ({ yText }) => {
+const QuillEditor: React.FC<QuillEditorProps> = ({ yText }) => {
   const containerRef = useRef(null)
   const quillRef = useRef<Quill>(null)
 
@@ -44,13 +44,12 @@ const Editor: React.FC<EditorProps> = ({ yText }) => {
   }, [containerRef])
 
   useEffect(() => {
-    if (yText) {
-      const binding = new QuillBinding(yText, quillRef.current)
-      quillRef.current?.enable()
-      return () => {
-        binding.destroy()
-        quillRef.current?.disable()
-      }
+    if (!yText) return
+    const binding = new QuillBinding(yText, quillRef.current)
+    quillRef.current?.enable()
+    return () => {
+      binding.destroy()
+      quillRef.current?.disable()
     }
   }, [yText])
 
@@ -61,4 +60,4 @@ const Editor: React.FC<EditorProps> = ({ yText }) => {
   )
 }
 
-export default Editor
+export default QuillEditor

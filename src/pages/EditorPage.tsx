@@ -1,25 +1,21 @@
 import sCommon from './CommonPage.module.css'
-import Editor from '../components/Editor'
+import QuillEditor from '../components/QuillEditor'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDataContext } from '../DataContext'
 import Title from '../components/Title'
 import Icon from '../components/Icon'
-import { useCallback } from 'react'
+import useActions from '../components/useActions'
 
 const EditorPage = () => {
-  const { yText, pages, addPage } = useDataContext()
+  const { yText, pages } = useDataContext()
   const { guid } = useParams()
   const navigate = useNavigate()
+  const { onAddClick } = useActions()
 
   if (!guid) navigate('/')
 
-  const onAddClick = useCallback(() => {
-    const newIndex = addPage()
-    navigate(`/editor/${guid}/${newIndex}`)
-  }, [addPage, guid, navigate])
-
   return (
-    <div>
+    <>
       <header className={sCommon.header}>
         <Title />
         <a href={`/list/${guid}`} title="list view">
@@ -37,9 +33,9 @@ const EditorPage = () => {
         </a>
       </header>
       <main>
-        <Editor yText={yText} />
+        <QuillEditor yText={yText} />
       </main>
-    </div>
+    </>
   )
 }
 

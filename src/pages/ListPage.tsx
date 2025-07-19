@@ -3,10 +3,11 @@ import sPage from './ListPage.module.css'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDataContext } from '../DataContext'
 import Icon from '../components/Icon'
-import { useCallback } from 'react'
+import useActions from '../components/useActions'
 
 const ListPage = () => {
-  const { pages, removePage } = useDataContext()
+  const { pages } = useDataContext()
+  const { onAddClick, onRemovePage } = useActions()
   const { guid } = useParams()
   const navigate = useNavigate()
 
@@ -14,25 +15,20 @@ const ListPage = () => {
 
   const hasDeleteButton = (pages?.length ?? 0) > 1
 
-  const onRemovePage = useCallback(
-    (index: number) => (e: MouseEvent) => {
-      e.preventDefault()
-      if (confirm(`Are you sure to delete « ${pages?.[index]} » ?`)) {
-        removePage(index)
-      }
-    },
-    [pages, removePage]
-  )
-
   return (
-    <div>
+    <>
       <header className={sCommon.header}>
         <h2 className={sPage.title}>{guid}</h2>
+        <button title="add a page" onClick={onAddClick}>
+          <Icon icon="plus" />
+        </button>
         <a href="/" title="back to home">
-          <Icon icon="home" />
+          <button>
+            <Icon icon="home" />
+          </button>
         </a>
       </header>
-      <main className={sPage.main}>
+      <main>
         <ul className={sPage.list}>
           {pages?.map((page, idx) => (
             <li key={page} className={sPage.row}>
@@ -51,7 +47,7 @@ const ListPage = () => {
           ))}
         </ul>
       </main>
-    </div>
+    </>
   )
 }
 
