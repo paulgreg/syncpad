@@ -3,110 +3,97 @@ import settings from './settings.json'
 import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
 import { DataContext } from './DataContext'
+import { useParams } from 'react-router-dom'
+import { useY } from 'react-yjs'
+
+const newTitle = 'unamed'
 
 interface DataContextProviderPropsType {
+  guid?: string
   children: React.ReactNode | React.ReactNode[]
 }
 
 const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
+  guid = '',
   children,
 }) => {
   const provider = useRef<WebsocketProvider>(null)
-  const [guid, setGuid] = useState<string>()
-  const [yDoc, setYDoc] = useState<Y.Doc>()
-  const [yPages, setYPages] = useState<Y.Array<string>>()
-  const [yMeta, setYMeta] = useState<Y.Map<number>>()
+  const { index: indexParam } = useParams()
+  const [index, setIndex] = useState(0)
 
-  const [yText, setYText] = useState<Y.Text>()
-
-  const [pages, setPages] = useState<string[]>()
-  const [title, setTitle] = useState<string>()
-  const [index, setIndex] = useState<number>(0)
+  const yDoc = useMemo(() => new Y.Doc({ guid }), [guid])
+  const yTitles = yDoc.getArray<string>(`titles`)
+  const yTexts = yDoc.getArray<Y.Text>(`texts`)
 
   useEffect(() => {
-    if (guid) {
-      const y = new Y.Doc({ guid })
-      setYDoc(y)
-      setYPages(y.getArray<string>(`pages`))
-      setYMeta(y.getMap<number>('meta'))
-      provider.current = new WebsocketProvider(settings.wsUrl, guid, y)
-    }
-    return () => {
-      setYDoc(undefined)
-      provider.current?.disconnect()
-    }
-  }, [guid])
+    setTimeout(() => {
+      if (yTitles.length === 0) yTitles.insert(0, [newTitle])
+      if (yTexts.length === 0) yTexts.insert(0, [new Y.Text()])
+    }, 100)
+  }, [yTexts, yTitles])
 
   useEffect(() => {
-    const updateDataOnChange = () => {
-      const _index = yMeta?.get('index') ?? 0
-      const _pages = yPages?.toArray()
-      setIndex(_index)
-      setPages(_pages)
-      setTitle(_pages?.[_index])
-      setYText(yDoc?.getText(`page-${_index}`))
+    if (indexParam) {
+      const nbIndexParam = parseInt(indexParam, 10)
+      if (nbIndexParam !== index) {
+        setIndex(nbIndexParam)
+      }
     }
-    yPages?.observe(updateDataOnChange)
-    yMeta?.observe(updateDataOnChange)
-    return () => {
-      yPages?.unobserve(updateDataOnChange)
-      yMeta?.unobserve(updateDataOnChange)
-    }
-  }, [yPages, yMeta, yDoc, index])
+  }, [index, indexParam])
+
+  useEffect(() => {
+    provider.current = new WebsocketProvider(settings.wsUrl, guid, yDoc)
+    return () => provider.current?.disconnect()
+  }, [guid, yDoc])
 
   const updateTitle = useCallback(
     (title: string) => {
-      if ((yPages?.length ?? 0) > 0) yPages?.delete(index, 1)
-      yPages?.insert(index, [title])
+      yDoc.transact(() => {
+        if ((yTitles?.length ?? 0) > 0) yTitles?.delete(index, 1)
+        yTitles?.insert(index, [title])
+      })
     },
-    [index, yPages]
-  )
-  const updateIndex = useCallback(
-    (i: number) => {
-      yMeta?.set('index', i)
-    },
-    [yMeta]
+    [index, yDoc, yTitles]
   )
 
   const addPage = useCallback(() => {
-    const newIndex = pages?.length ?? 0
-    yPages?.insert(newIndex, [''])
-    yMeta?.set('index', newIndex)
+    const newIndex = yTitles?.length ?? 0
+    yDoc.transact(() => {
+      yTitles?.insert(newIndex, [newTitle])
+      yTexts?.insert(newIndex, [new Y.Text()])
+    })
+    setIndex(newIndex)
     return newIndex
-  }, [pages, yMeta, yPages])
+  }, [yDoc, yTexts, yTitles])
 
   const removePage = useCallback(
     (index: number) => {
-      yPages?.delete(index, 1)
-      yMeta?.set('index', 0)
+      yDoc.transact(() => {
+        yTitles?.delete(index, 1)
+        yTexts?.delete(index, 1)
+      })
+      setIndex(0)
     },
-    [yMeta, yPages]
+    [yDoc, yTexts, yTitles]
   )
+
+  const yText = yTexts?.get(index)
+  const titles = useY(yTitles)
+  const title = titles[index]
 
   const contextValue = useMemo(
     () => ({
       guid,
-      setGuid,
       index,
-      setIndex: updateIndex,
-      pages,
+      setIndex,
+      titles,
       title,
       setTitle: updateTitle,
       addPage,
       removePage,
       yText,
     }),
-    [
-      guid,
-      index,
-      updateIndex,
-      pages,
-      title,
-      updateTitle,
-      addPage,
-      removePage,
-      yText,
-    ]
+    [guid, index, titles, title, updateTitle, addPage, removePage, yText]
   )
 
   return (

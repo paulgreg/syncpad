@@ -3,7 +3,7 @@ import { useDataContext } from '../DataContext'
 import { useNavigate } from 'react-router-dom'
 
 const useActions = () => {
-  const { guid, pages, addPage, removePage } = useDataContext()
+  const { guid, titles, addPage, removePage } = useDataContext()
   const navigate = useNavigate()
 
   const onAddClick = useCallback(() => {
@@ -13,11 +13,11 @@ const useActions = () => {
 
   const onRemovePage = useCallback(
     (index: number) => () => {
-      if (confirm(`Are you sure to delete « ${pages?.[index]} » ?`)) {
+      if (confirm(`Are you sure to delete « ${titles?.[index]} » ?`)) {
         removePage(index)
       }
     },
-    [pages, removePage]
+    [removePage, titles]
   )
 
   return { onAddClick, onRemovePage }

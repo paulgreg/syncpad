@@ -2,12 +2,11 @@ import { createContext, useContext } from 'react'
 import * as Y from 'yjs'
 
 type DataContextType = {
-  guid?: string
-  setGuid: (guid: string) => void
+  guid: string
   index: number
   setIndex: (index: number) => void
-  pages?: string[]
-  title?: string
+  titles: string[]
+  title: string
   setTitle: (title: string) => void
   addPage: () => number
   removePage: (index: number) => void

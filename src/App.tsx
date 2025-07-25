@@ -1,26 +1,25 @@
 import s from './App.module.css'
 import { Outlet, useParams } from 'react-router-dom'
-import { useDataContext } from './DataContext'
+import DataContextProvider from './DataContextProvider'
+
+const InnerApp = () => (
+  <div className={s.root}>
+    <Outlet />
+  </div>
+)
 
 const App = () => {
-  const { guid, setGuid, index, setIndex } = useDataContext()
-  const { guid: guidParam, index: indexParam } = useParams()
+  const { guid } = useParams()
 
-  if (guidParam && guidParam !== guid) {
-    setGuid(guidParam)
-  }
-  if (indexParam) {
-    const nbIndexParam = parseInt(indexParam, 10)
-    if (nbIndexParam !== index) {
-      setIndex(nbIndexParam)
-    }
+  if (guid) {
+    return (
+      <DataContextProvider guid={guid}>
+        <InnerApp />
+      </DataContextProvider>
+    )
   }
 
-  return (
-    <div className={s.root}>
-      <Outlet />
-    </div>
-  )
+  return <InnerApp />
 }
 
 export default App
