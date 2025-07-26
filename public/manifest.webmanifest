@@ -1,6 +1,6 @@
 {
-  "name": "Scratchpad",
-  "short_name": "Scratchpad",
+  "name": "SyncPad",
+  "short_name": "SyncPad",
   "start_url": "./",
   "display": "minimal-ui",
   "theme_color": "#FFF7ED",
