@@ -79,7 +79,7 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
 
   const yText = yTexts?.get(index)
   const titles = useY(yTitles)
-  const title = titles[index]
+  const title = titles[index] ?? ''
 
   const contextValue = useMemo(
     () => ({
