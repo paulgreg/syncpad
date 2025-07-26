@@ -29,7 +29,7 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
     setTimeout(() => {
       if (yTitles.length === 0) yTitles.insert(0, [newTitle])
       if (yTexts.length === 0) yTexts.insert(0, [new Y.Text()])
-    }, 100)
+    }, 250)
   }, [yTexts, yTitles])
 
   useEffect(() => {
