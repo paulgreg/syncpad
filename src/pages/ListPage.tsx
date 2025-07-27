@@ -6,7 +6,7 @@ import Icon from '../components/Icon'
 import useActions from '../components/useActions'
 
 const ListPage = () => {
-  const { titles } = useDataContext()
+  const { titles, lengths } = useDataContext()
   const { onAddClick, onRemovePage } = useActions()
   const { guid } = useParams()
   const navigate = useNavigate()
@@ -33,9 +33,10 @@ const ListPage = () => {
           {titles?.map((title, idx) => (
             <li key={`${idx}-${title}`} className={sPage.row}>
               <span className={sPage.innerRow}>
-                <Link to={`/editor/${guid}/${idx}`} className={sPage.name}>
+                <Link to={`/editor/${guid}/${idx}`} className={sPage.item}>
                   <span className={sPage.number}>{idx + 1}.</span>
-                  {title}
+                  <span className={sPage.name}>{title}</span>
+                  <span className={sPage.lengths}>({lengths[idx]} chars)</span>
                 </Link>
                 {hasDeleteButton && (
                   <button onClick={onRemovePage(idx)}>

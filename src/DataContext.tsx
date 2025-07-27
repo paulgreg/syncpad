@@ -11,6 +11,7 @@ type DataContextType = {
   addPage: () => number
   removePage: (index: number) => void
   yText?: Y.Text
+  lengths: number[]
 }
 
 export const DataContext = createContext<DataContextType>({} as DataContextType)

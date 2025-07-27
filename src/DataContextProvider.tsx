@@ -80,6 +80,8 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   const yText = yTexts?.get(index)
   const titles = useY(yTitles)
   const title = titles[index] ?? ''
+  const texts = useY(yTexts)
+  const lengths = texts.map((str) => str?.length ?? 0)
 
   const contextValue = useMemo(
     () => ({
@@ -92,8 +94,19 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
       addPage,
       removePage,
       yText,
+      lengths,
     }),
-    [guid, index, titles, title, updateTitle, addPage, removePage, yText]
+    [
+      guid,
+      index,
+      titles,
+      title,
+      updateTitle,
+      addPage,
+      removePage,
+      yText,
+      lengths,
+    ]
   )
 
   return (
