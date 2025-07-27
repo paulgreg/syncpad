@@ -26,13 +26,6 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   const yTexts = yDoc.getArray<Y.Text>(`texts`)
 
   useEffect(() => {
-    setTimeout(() => {
-      if (yTitles.length === 0) yTitles.insert(0, [newTitle])
-      if (yTexts.length === 0) yTexts.insert(0, [new Y.Text()])
-    }, 250)
-  }, [yTexts, yTitles])
-
-  useEffect(() => {
     if (indexParam) {
       const nbIndexParam = parseInt(indexParam, 10)
       if (nbIndexParam !== index) {

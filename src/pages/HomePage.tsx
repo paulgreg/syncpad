@@ -9,7 +9,7 @@ const HomePage = () => {
     e.preventDefault()
     const inputValue = inputRef?.current?.value
     if (inputValue) {
-      navigate(`/editor/${inputValue}/0`)
+      navigate(`/list/${inputValue}`)
     }
     return false
   }

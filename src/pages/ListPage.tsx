@@ -30,6 +30,9 @@ const ListPage = () => {
       </header>
       <main>
         <ul className={sPage.list}>
+          {titles.length === 0 && (
+            <li>No page, create one with the + button</li>
+          )}
           {titles?.map((title, idx) => (
             <li key={`${idx}-${title}`} className={sPage.row}>
               <span className={sPage.innerRow}>
