@@ -74,7 +74,10 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   const titles = useY(yTitles)
   const title = titles[index] ?? ''
   const texts = useY(yTexts)
-  const lengths = texts.map((str) => str?.length ?? 0)
+  const lengths = texts.map((str = '') => str?.length ?? 0)
+  const wordsCount = texts.map(
+    (str = '') => str.trim().split(/\s+/).filter(Boolean).length
+  )
 
   const contextValue = useMemo(
     () => ({
@@ -88,6 +91,7 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
       removePage,
       yText,
       lengths,
+      wordsCount,
     }),
     [
       guid,
@@ -99,6 +103,7 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
       removePage,
       yText,
       lengths,
+      wordsCount,
     ]
   )
 
