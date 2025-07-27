@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import { QuillBinding } from 'y-quill'
 import type * as Y from 'yjs'
 import s from './QuillEditor.module.css'
-import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 
 type QuillEditorProps = {
   yText?: Y.Text
@@ -38,7 +38,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ yText }) => {
           userOnly: true, // Local undo shouldn't undo changes from remote users
         },
       },
-      theme: 'snow',
+      theme: 'bubble',
     })
     quillRef.current?.disable()
   }, [containerRef])
