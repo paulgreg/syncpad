@@ -3,8 +3,8 @@
   "short_name": "SyncPad",
   "start_url": "./",
   "display": "minimal-ui",
-  "theme_color": "#FFF7ED",
-  "background_color": "#FFF7ED",
+  "theme_color": "#282c34",
+  "background_color": "#282c34",
   "icons": [
     {
       "src": "pad-64.png",
