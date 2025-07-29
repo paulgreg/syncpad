@@ -5,6 +5,7 @@ import { WebsocketProvider } from 'y-websocket'
 import { DataContext } from './DataContext'
 import { useParams } from 'react-router-dom'
 import { useY } from 'react-yjs'
+import { IndexeddbPersistence } from 'y-indexeddb'
 
 const newTitle = 'unamed'
 
@@ -24,6 +25,10 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   const yDoc = useMemo(() => new Y.Doc({ guid: `sp:${guid}` }), [guid])
   const yTitles = yDoc.getArray<string>(`titles`)
   const yTexts = yDoc.getArray<Y.Text>(`texts`)
+  const persistence = new IndexeddbPersistence(guid, yDoc)
+  persistence.once('synced', () => {
+    /* initial content loaded */
+  })
 
   useEffect(() => {
     if (indexParam) {
