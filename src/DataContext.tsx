@@ -10,9 +10,8 @@ type DataContextType = {
   setTitle: (title: string) => void
   addPage: () => number
   removePage: (index: number) => void
+  texts: string[]
   yText?: Y.Text
-  lengths: number[]
-  wordsCount: number[]
 }
 
 export const DataContext = createContext<DataContextType>({} as DataContextType)

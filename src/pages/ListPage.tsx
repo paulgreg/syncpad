@@ -6,7 +6,7 @@ import Icon from '../components/Icon'
 import useActions from '../components/useActions'
 
 const ListPage = () => {
-  const { titles, lengths, wordsCount } = useDataContext()
+  const { titles, texts } = useDataContext()
   const { onAddClick, onRemovePage } = useActions()
   const { guid } = useParams()
   const navigate = useNavigate()
@@ -14,6 +14,11 @@ const ListPage = () => {
   if (!guid) navigate('/')
 
   const hasDeleteButton = (titles?.length ?? 0) > 1
+
+  const lengths = texts.map((str = '') => str?.length ?? 0)
+  const wordsCount = texts.map(
+    (str = '') => str.trim().split(/\s+/).filter(Boolean).length
+  )
 
   return (
     <>
