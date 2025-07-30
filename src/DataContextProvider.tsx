@@ -19,16 +19,13 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   children,
 }) => {
   const provider = useRef<WebsocketProvider>(null)
+  const persistence = useRef<IndexeddbPersistence>(null)
   const { index: indexParam } = useParams()
   const [index, setIndex] = useState(0)
 
   const yDoc = useMemo(() => new Y.Doc({ guid: `sp:${guid}` }), [guid])
   const yTitles = yDoc.getArray<string>(`titles`)
   const yTexts = yDoc.getArray<Y.Text>(`texts`)
-  const persistence = new IndexeddbPersistence(guid, yDoc)
-  persistence.once('synced', () => {
-    /* initial content loaded */
-  })
 
   useEffect(() => {
     if (indexParam) {
@@ -40,6 +37,7 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   }, [index, indexParam])
 
   useEffect(() => {
+    persistence.current = new IndexeddbPersistence(guid, yDoc)
     provider.current = new WebsocketProvider(settings.wsUrl, guid, yDoc)
     return () => provider.current?.disconnect()
   }, [guid, yDoc])
