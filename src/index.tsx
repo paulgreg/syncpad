@@ -7,7 +7,7 @@ import HomePage from './pages/HomePage.tsx'
 import EditorPage from './pages/EditorPage.tsx'
 import ListPage from './pages/ListPage.tsx'
 
-if ('serviceWorker' in navigator)
+if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator)
   navigator.serviceWorker.register('/syncpad/sw.js')
 
 createRoot(document.getElementById('root')!).render(
