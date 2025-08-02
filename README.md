@@ -9,4 +9,4 @@ I’ve made a launcher project here : [paulgreg/yjs-server](https://github.com/p
 
 ## Config
 
-`cp src/settings.dist.json src/settings.json`
+`cp src/settings.json.dist src/settings.json`
