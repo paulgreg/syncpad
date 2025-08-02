@@ -38,8 +38,10 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
 
   useEffect(() => {
     persistence.current = new IndexeddbPersistence(guid, yDoc)
-    provider.current = new WebsocketProvider(settings.wsUrl, guid, yDoc)
-    return () => provider.current?.disconnect()
+    if (settings.saveOnline && settings.wsUrl) {
+      provider.current = new WebsocketProvider(settings.wsUrl, guid, yDoc)
+      return () => provider.current?.disconnect()
+    }
   }, [guid, yDoc])
 
   const updateTitle = useCallback(
