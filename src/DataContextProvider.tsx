@@ -23,7 +23,7 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   const { index: indexParam } = useParams()
   const [index, setIndex] = useState(0)
 
-  const yDoc = useMemo(() => new Y.Doc({ guid: `sp:${guid}` }), [guid])
+  const yDoc = useMemo(() => new Y.Doc({ guid }), [guid])
   const yTitles = yDoc.getArray<string>(`titles`)
   const yTexts = yDoc.getArray<Y.Text>(`texts`)
 
