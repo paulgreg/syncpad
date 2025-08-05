@@ -4,7 +4,7 @@ A [CRDT](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type) notep
 
 It is designed to be used with [y-websocket](https://www.npmjs.com/package/y-websocket).
 
-I’ve made a launcher project here : [paulgreg/yjs-server](https://github.com/paulgreg/yjs-server)
+You can use my forked project here : [paulgreg/y-websocket-service](https://github.com/paulgreg/y-websocket-service)
 
 
 ## Config
