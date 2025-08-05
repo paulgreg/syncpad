@@ -39,7 +39,9 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   useEffect(() => {
     persistence.current = new IndexeddbPersistence(guid, yDoc)
     if (settings.saveOnline && settings.crdtUrl) {
-      provider.current = new WebsocketProvider(settings.crdtUrl, guid, yDoc)
+      provider.current = new WebsocketProvider(settings.crdtUrl, guid, yDoc, {
+        params: { secret: settings.secret },
+      })
       return () => provider.current?.disconnect()
     }
   }, [guid, yDoc])
