@@ -75,16 +75,16 @@ button:focus-visible {
 }
 button[disabled] {
   color: grey;
-  svg {
-    fill: grey;
-  }
+}
+button[disabled] svg {
+  fill: grey;
 }
 button[disabled]:hover {
   border-color: transparent;
   cursor: not-allowed;
-  svg {
-    fill: grey;
-  }
+}
+button[disabled]:hover svg {
+  fill: grey;
 }
 
 input[type='submit'] {
@@ -102,7 +102,6 @@ input {
     --link-color: black;
     --button-color: black;
     --background-color: #ffffff;
-    --link-hover-color: #747bff;
-    --button-background-color: #f9f9f9;
+    --button-background-color: #efeaf2;
   }
 }

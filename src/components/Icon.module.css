@@ -2,7 +2,7 @@
   display: flex;
 
   svg {
-    fill: white;
+    fill: var(--button-color);
   }
 
   &:hover svg {
