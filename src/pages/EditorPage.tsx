@@ -8,17 +8,17 @@ import useActions from '../components/useActions'
 
 const EditorPage = () => {
   const { yText, titles } = useDataContext()
-  const { guid } = useParams()
+  const { name } = useParams()
   const { onAddClick } = useActions()
   const navigate = useNavigate()
 
-  if (!guid) navigate('/')
+  if (!name) navigate('/')
 
   return (
     <>
       <header className={sCommon.header}>
         <Title />
-        <Link to={`/list/${guid}`} title="list view">
+        <Link to={`/list/${name}`} title="list view">
           <button disabled={(titles?.length ?? 0) === 0}>
             <Icon icon="list" />
           </button>

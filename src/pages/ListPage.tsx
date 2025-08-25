@@ -8,10 +8,10 @@ import useActions from '../components/useActions'
 const ListPage = () => {
   const { titles, texts } = useDataContext()
   const { onAddClick, onRemovePage } = useActions()
-  const { guid } = useParams()
+  const { name } = useParams()
   const navigate = useNavigate()
 
-  if (!guid) navigate('/')
+  if (!name) navigate('/')
 
   const hasDeleteButton = (titles?.length ?? 0) > 1
 
@@ -23,7 +23,7 @@ const ListPage = () => {
   return (
     <>
       <header className={sCommon.header}>
-        <h2 className={sPage.title}>{guid}</h2>
+        <h2 className={sPage.title}>{name}</h2>
         <button title="add a page" onClick={onAddClick}>
           <Icon icon="plus" />
         </button>
@@ -41,7 +41,7 @@ const ListPage = () => {
           {titles?.map((title, idx) => (
             <li key={`${idx}-${title}`} className={sPage.row}>
               <span className={sPage.innerRow}>
-                <Link to={`/editor/${guid}/${idx}`} className={sPage.item}>
+                <Link to={`/editor/${name}/${idx}`} className={sPage.item}>
                   <span className={sPage.number}>{idx + 1}.</span>
                   <span className={sPage.name}>{title}</span>
                   <span className={sPage.lengths}>

@@ -7,17 +7,21 @@ import { useParams } from 'react-router-dom'
 import { useY } from 'react-yjs'
 import { IndexeddbPersistence } from 'y-indexeddb'
 
+const PREFIX = 'sp'
+
 const newTitle = 'unamed'
+const newContent = '...'
 
 interface DataContextProviderPropsType {
-  guid?: string
+  name?: string
   children: React.ReactNode | React.ReactNode[]
 }
 
 const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
-  guid = '',
+  name = '',
   children,
 }) => {
+  const guid = `${PREFIX}:${name}`
   const provider = useRef<WebsocketProvider>(null)
   const persistence = useRef<IndexeddbPersistence>(null)
   const { index: indexParam } = useParams()
@@ -49,8 +53,8 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   const updateTitle = useCallback(
     (title: string) => {
       yDoc.transact(() => {
-        if ((yTitles?.length ?? 0) > 0) yTitles?.delete(index, 1)
-        yTitles?.insert(index, [title])
+        if ((yTitles.length ?? 0) > 0) yTitles?.delete(index, 1)
+        yTitles.insert(index, [title])
       })
     },
     [index, yDoc, yTitles]
@@ -59,8 +63,8 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   const addPage = useCallback(() => {
     const newIndex = yTitles?.length ?? 0
     yDoc.transact(() => {
-      yTitles?.insert(newIndex, [newTitle])
-      yTexts?.insert(newIndex, [new Y.Text()])
+      yTitles.insert(newIndex, [newTitle])
+      yTexts.insert(newIndex, [new Y.Text(newContent)])
     })
     setIndex(newIndex)
     return newIndex
@@ -69,22 +73,22 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   const removePage = useCallback(
     (index: number) => {
       yDoc.transact(() => {
-        yTitles?.delete(index, 1)
-        yTexts?.delete(index, 1)
+        yTitles.delete(index, 1)
+        yTexts.delete(index, 1)
       })
       setIndex(0)
     },
     [yDoc, yTexts, yTitles]
   )
 
-  const yText = yTexts?.get(index)
+  const yText = yTexts.get(index)
   const titles = useY(yTitles)
   const title = titles[index] ?? ''
   const texts = useY(yTexts)
 
   const contextValue = useMemo(
     () => ({
-      guid,
+      name,
       index,
       setIndex,
       titles,
@@ -95,7 +99,7 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
       texts,
       yText,
     }),
-    [guid, index, titles, title, updateTitle, addPage, removePage, texts, yText]
+    [name, index, titles, title, updateTitle, addPage, removePage, texts, yText]
   )
 
   return (

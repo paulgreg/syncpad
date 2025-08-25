@@ -18,8 +18,8 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
-          <Route path="/editor/:guid/:index" element={<EditorPage />} />
-          <Route path="/list/:guid" element={<ListPage />} />
+          <Route path="/editor/:name/:index" element={<EditorPage />} />
+          <Route path="/list/:name" element={<ListPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

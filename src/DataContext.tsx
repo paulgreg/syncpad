@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react'
 import * as Y from 'yjs'
 
 type DataContextType = {
-  guid: string
+  name: string
   index: number
   setIndex: (index: number) => void
   titles: string[]

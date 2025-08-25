@@ -2,8 +2,6 @@ import s from './App.module.css'
 import { Outlet, useParams } from 'react-router-dom'
 import DataContextProvider from './DataContextProvider'
 
-const PREFIX = 'sp'
-
 const InnerApp = () => (
   <div className={s.root}>
     <Outlet />
@@ -11,11 +9,11 @@ const InnerApp = () => (
 )
 
 const App = () => {
-  const { guid } = useParams()
+  const { name } = useParams()
 
-  if (guid) {
+  if (name) {
     return (
-      <DataContextProvider guid={`${PREFIX}:${guid}`}>
+      <DataContextProvider name={name}>
         <InnerApp />
       </DataContextProvider>
     )
