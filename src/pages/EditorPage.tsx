@@ -5,6 +5,7 @@ import { useDataContext } from '../DataContext'
 import Title from '../components/Title'
 import Icon from '../components/Icon'
 import useActions from '../components/useActions'
+import Status from '../components/Status'
 
 const EditorPage = () => {
   const { yText, titles } = useDataContext()
@@ -18,6 +19,7 @@ const EditorPage = () => {
     <>
       <header className={sCommon.header}>
         <Title />
+        <Status />
         <Link to={`/list/${name}`} title="list view">
           <button disabled={(titles?.length ?? 0) === 0}>
             <Icon icon="list" />

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import settings from './settings.json'
 import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
-import { DataContext } from './DataContext'
+import { ConnectionStatus, DataContext } from './DataContext'
 import { useParams } from 'react-router-dom'
 import { useY } from 'react-yjs'
 import { IndexeddbPersistence } from 'y-indexeddb'
@@ -23,6 +23,9 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
 }) => {
   const guid = `${PREFIX}:${name}`
   const provider = useRef<WebsocketProvider>(null)
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(
+    ConnectionStatus.offline
+  )
   const persistence = useRef<IndexeddbPersistence>(null)
   const { index: indexParam } = useParams()
   const [index, setIndex] = useState(0)
@@ -40,12 +43,23 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
     }
   }, [index, indexParam])
 
+  const onUpdateStatus = (event: {
+    status: 'connected' | 'disconnected' | 'connecting'
+  }) => {
+    if (event.status === 'connected') {
+      setConnectionStatus(ConnectionStatus.connected)
+    } else {
+      setConnectionStatus(ConnectionStatus.disconnected)
+    }
+  }
+
   useEffect(() => {
     persistence.current = new IndexeddbPersistence(guid, yDoc)
     if (settings.saveOnline && settings.crdtUrl) {
       provider.current = new WebsocketProvider(settings.crdtUrl, guid, yDoc, {
         params: { secret: settings.secret },
       })
+      provider?.current.on('status', onUpdateStatus)
       return () => provider.current?.disconnect()
     }
   }, [guid, yDoc])
@@ -98,8 +112,20 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
       removePage,
       texts,
       yText,
+      connectionStatus,
     }),
-    [name, index, titles, title, updateTitle, addPage, removePage, texts, yText]
+    [
+      name,
+      index,
+      titles,
+      title,
+      updateTitle,
+      addPage,
+      removePage,
+      texts,
+      yText,
+      connectionStatus,
+    ]
   )
 
   return (

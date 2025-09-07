@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDataContext } from '../DataContext'
 import Icon from '../components/Icon'
 import useActions from '../components/useActions'
+import Status from '../components/Status'
 
 const ListPage = () => {
   const { titles, texts } = useDataContext()
@@ -24,6 +25,7 @@ const ListPage = () => {
     <>
       <header className={sCommon.header}>
         <h2 className={sPage.title}>{name}</h2>
+        <Status />
         <button title="add a page" onClick={onAddClick}>
           <Icon icon="plus" />
         </button>
