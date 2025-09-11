@@ -47,7 +47,8 @@ const ListPage = () => {
                   <span className={sPage.number}>{idx + 1}.</span>
                   <span className={sPage.name}>{title}</span>
                   <span className={sPage.lengths}>
-                    ({lengths[idx]} chars, {wordsCount[idx]} words)
+                    ({lengths[idx].toLocaleString()} chars,{' '}
+                    {wordsCount[idx].toLocaleString()} words)
                   </span>
                 </Link>
                 {hasDeleteButton && (
