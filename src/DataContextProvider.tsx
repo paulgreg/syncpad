@@ -36,7 +36,7 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
 
   useEffect(() => {
     if (indexParam) {
-      const nbIndexParam = parseInt(indexParam, 10)
+      const nbIndexParam = Number.parseInt(indexParam, 10)
       if (nbIndexParam !== index) {
         setIndex(nbIndexParam)
       }
