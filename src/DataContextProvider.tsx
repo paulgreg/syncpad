@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import settings from './settings.json'
 import * as Y from 'yjs'
-import { WebsocketProvider } from 'y-websocket'
 import { ConnectionStatus, DataContext } from './DataContext'
 import { useParams } from 'react-router-dom'
 import { useY } from 'react-yjs'
 import { IndexeddbPersistence } from 'y-indexeddb'
+import { HocuspocusProvider } from '@hocuspocus/provider'
 
 const PREFIX = 'sp'
 
@@ -22,7 +22,8 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   children,
 }) => {
   const guid = `${PREFIX}:${name}`
-  const provider = useRef<WebsocketProvider>(null)
+  const provider = useRef<HocuspocusProvider>(null)
+
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(
     ConnectionStatus.offline
   )
@@ -38,7 +39,9 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
     if (indexParam) {
       const nbIndexParam = Number.parseInt(indexParam, 10)
       if (nbIndexParam !== index) {
-        setIndex(nbIndexParam)
+        setTimeout(() => {
+          setIndex(nbIndexParam)
+        }, 0)
       }
     }
   }, [index, indexParam])
@@ -56,8 +59,11 @@ const DataContextProvider: React.FC<DataContextProviderPropsType> = ({
   useEffect(() => {
     persistence.current = new IndexeddbPersistence(guid, yDoc)
     if (settings.saveOnline && settings.crdtUrl) {
-      provider.current = new WebsocketProvider(settings.crdtUrl, guid, yDoc, {
-        params: { secret: settings.secret },
+      provider.current = new HocuspocusProvider({
+        url: `${settings.crdtUrl}ws`,
+        name: guid,
+        document: yDoc,
+        token: settings.secret,
       })
       provider?.current.on('status', onUpdateStatus)
       return () => provider.current?.disconnect()
